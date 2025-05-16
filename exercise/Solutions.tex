@@ -1,0 +1,133 @@
+%%%%%%%%%%%%%%%%%%%% Template
+\begin{center}
+    \textbf{\textcolor{black}{\large CẤU TRÚC DỮ LIỆU VÀ GIẢI THUẬT}}
+
+    DANH SÁCH LIÊN KẾT
+\end{center}
+
+% -----------------------------------------------------
+
+% Câu 1
+\begin{tcolorbox}[
+    colback=cyan!10!white,
+    opacityback=0,
+    enhanced jigsaw,
+    colframe=black!75!white, 
+    sharp corners]
+    \textcolor{black}{\textbf{Bài 1.}} % Nhập đề bài từ dòng kế tiếp
+
+    \begin{enumerate}
+        \item[\textbf{a.}] {
+            % Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+
+            % Phải để trống một dòng trước dấu } khi kết thúc
+        }
+        \item[\textbf{b.}] {
+            % Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+
+            % Phải để trống một dòng trước dấu } khi kết thúc
+        }
+    \end{enumerate}
+\end{tcolorbox}
+
+\textcolor{black}{\textbf{Lời giải. }}
+\begin{enumerate}
+  % \begin{multicols}{2}
+      \item[\textcolor{black}{\textbf{a.}}] {
+        % Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+
+        % Phải để trống một dòng trước dấu } khi kết thúc
+      }
+      
+      \item[\textcolor{black}{\textbf{b.}}] {
+        % Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+
+        % Phải để trống một dòng trước dấu } khi kết thúc
+      }
+  % \end{multicols}
+\end{enumerate}
+\textcolor{black}{\textbf{Câu 0. }} 
+\begin{itemize}
+  % \begin{multicols}{2}
+      \item[\textcolor{black}{\textbf{a.}}] {
+        %%%%% Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+        Quay trở lại bài toán, từ giả thiết suy ra $\det(A) = \pm 1$ và $\det(B) = \pm 1$. Mặt khác $\det(A) \ne \det(B)$ nên $\det(A) + \det(B) = 0$. 
+        \hfill \textbf{0.25 điểm}
+
+        Ta có 
+        \begin{flalign*}
+            &&\det(A + B) \cdot \det(A)  
+            &= \det\left((A + B)^T\right) \cdot \det(A) 
+            & ~ \\
+            && ~ 
+            &= \det(A^T + B^T) \cdot \det(A) 
+            & \hfill \textbf{0.25 điểm} \\
+            && ~ 
+            &= \det(A^TA+ B^TA) 
+            & ~ \\
+            && ~ 
+            &= \det(I + B^TA).
+            & \textbf{0.25 điểm} 
+        \end{flalign*}
+        
+        Tương tự, ta cũng chứng minh được $\det(A + B) \cdot \det(B) = \det(I + A^TB)$. Mặt khác, $\det(I + B^TA) = \det\left((I + B^TA)^T\right) = \det\left(I + (B^TA)^T\right) = \det\left(I + A^TB\right)$. 
+        \hfill \textbf{0.25 điểm}
+        
+        Do đó, $\det(A + B) \cdot \det(A) = \det(A + B) \cdot \det(B) = -\det(A + B) \cdot \det(A)$ nên $2\cdot \det(A) \cdot \det(A + B) = 0$, kéo theo $\det(A + B) = 0$ (do $\det(A) \ne 0$).  
+        \hfill \textbf{0.25 điểm}
+        
+        %%%%% Phải để trống một dòng trước dấu } khi kết thúc
+      }
+      
+      \item[\textcolor{black}{\textbf{b.}}] {
+        %%%%% Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+        Chèn hình ảnh vào file tài liệu:
+        \begin{center}
+            \includegraphics[scale=0.585]{./Resources/Images/image_sample.png}
+        \end{center}
+
+        Nếu muốn chèn caption, hãy dùng:
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[scale=0.585]{./Resources/Images/image_sample.png}
+            \caption{Chèn hình ảnh mẫu vào tài liệu với caption.}
+            \label{fig:image-sample}
+        \end{figure}
+        
+        %%%%% Phải để trống một dòng trước dấu } khi kết thúc
+      }
+      
+      \item[\textcolor{black}{\textbf{c.}}] {
+        %%%%% Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+        Chèn file code vào file tài liệu:
+        
+        \lstinputlisting[language=C++, caption=]{./Resources/Files/code_sample.cpp}
+        
+        %%%%% Phải để trống một dòng trước dấu } khi kết thúc
+      }
+      
+      \item[\textcolor{black}{\textbf{d.}}] {
+        %%%%% Nội dung tiểu mục bắt đầu ở dòng kế tiếp
+        Chèn bảng vào file tài liệu:
+        
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|C{3cm}|C{3cm}|C{3cm}|}
+                \hline
+                \bf ABC & \bf XYZ & \bf UVW \\
+
+                \hline
+                123 & 123 & 123 \\
+                \hline
+               123 & 123 & 123 \\
+                \hline
+            \end{tabular}
+            \caption{Chèn bảng mẫu vào tài liệu với caption.}
+            \label{tab:table-sample}
+        \end{table}
+        
+        %%%%% Phải để trống một dòng trước dấu } khi kết thúc      
+      }
+  % \end{multicols}
+\end{itemize}
+
