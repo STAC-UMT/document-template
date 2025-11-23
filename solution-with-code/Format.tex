@@ -311,3 +311,107 @@
 %%%%%%%%%%%%%%%%%%%% Indent
 \setlength\parindent{0pt}
 %%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Convert all colors to black 
+\definecolor{JetBlack}{RGB}{0,0,0} 
+\newcommand{\ChuyenHeMauDen}{%
+    \colorlet{UMTBlue}{JetBlack} 
+    \colorlet{UMTRed}{JetBlack}
+    \colorlet{blue}{JetBlack}
+    \colorlet{red}{JetBlack}
+    \colorlet{cyan}{JetBlack}
+    \colorlet{green}{JetBlack}
+    \colorlet{magenta}{JetBlack}
+    \colorlet{yellow}{JetBlack}
+    \colorlet{black}{JetBlack}
+    % Nếu bạn có dùng màu nào khác thì thêm tiếp vào đây: \colorlet{TenMau}{black}
+}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Custom dethi.sty
+% Lệnh in Đề bài với tham số màu tùy chọn
+% Cú pháp: \LayDeBai{Mã_Câu_Hỏi}[Màu_Sắc]
+% Ví dụ:   \LayDeBai{bai:1}          -> Màu đen mặc định
+%          \LayDeBai{bai:1}[UMTBlue]    -> Chữ "Câu 1." màu UMTBlue
+% 
+\NewDocumentCommand{\LayDeBai}{m O{black}}{%
+    {
+        \showproblems \hideanswers \khongloigiai
+        \stepcounter{socauhoi} % Tự động tăng số thứ tự
+        
+        % In chữ "Câu X." với màu được chọn (mặc định là black)
+        \def\tempparam{#2}
+        \ifblank{#2}{\ChuyenHeMauDen}{}
+        \ifdefstring{\tempparam}{black}{\ChuyenHeMauDen}{}
+        \ifblank{#2}
+            {\noindent \textbf{\textcolor{black}{Câu \thesocauhoi.}}}
+            {\noindent \textbf{\textcolor{#2}{Câu \thesocauhoi.}}}
+        \useproblem[ds]{#1}
+    }%
+}
+
+% Lệnh in Lời giải với tham số màu tùy chọn
+% Cú pháp: \LayLoiGiai{Mã_Câu_Hỏi}[Màu_Sắc]
+\NewDocumentCommand{\LayLoiGiai}{m O{black}}{%
+    {
+        \hideproblems \showanswers \coloigiai \lietkedatrue
+        \par \noindent 
+        
+        % Kiểm tra: Nếu tham số màu (#2) bị bỏ trống hoặc là khoảng trắng -> Dùng 'black'
+        % Ngược lại -> Dùng màu do người dùng nhập
+        \def\tempparam{#2}
+        \ifblank{#2}{\ChuyenHeMauDen}{} 
+        \ifdefstring{\tempparam}{black}{\ChuyenHeMauDen}{}
+        \ifblank{#2}
+            {\textbf{\textcolor{black}{Lời giải.}}}
+            {\textbf{\textcolor{#2}{Lời giải.}}}
+        \useproblem[ds]{#1}
+    }%
+}
+
+% LỆNH IN: CÂU X + ĐIỂM + LỜI GIẢI
+% Cấu trúc: Câu X. (Y điểm) [Nội dung lời giải]
+% 
+% Cú pháp: \LayCauVaDiem{Mã_Câu_Hỏi}[Màu_Của_Chữ_Câu]
+% Ví dụ:   \LayCauVaDiem{bai:1}[UMTBlue] -> Câu xanh, Điểm đỏ, Giải màu gốc
+%          \LayCauVaDiem{bai:1}          -> Tất cả đen thui (In ấn)
+% 
+\NewDocumentCommand{\LayCauVaDiem}{m O{JetBlack}}{%
+    {
+        % 1. Cấu hình hiển thị: Ẩn đề, Hiện lời giải
+        \hideproblems \showanswers \coloigiai \lietkedatrue
+        \stepcounter{socauhoi} 
+        
+        % 2. Xử lý logic màu thông minh
+        % Mặc định: Màu tiêu đề là màu người dùng nhập (#2)
+        \def\mauTieuDe{#2} 
+        
+        % Tạo biến tạm để kiểm tra
+        \def\tempparam{#2} 
+        
+        % Logic kiểm tra: Nếu là 'black', 'JetBlack' hoặc để trống -> Kích hoạt chế độ đen toàn bộ
+        \ifblank{#2}{
+            \ChuyenHeMauDen        % Ép nội dung + màu UMTRed về đen
+            \def\mauTieuDe{JetBlack} % Ép tiêu đề về đen
+        }{} 
+        \ifdefstring{\tempparam}{black}{
+            \ChuyenHeMauDen 
+            \def\mauTieuDe{JetBlack}
+        }{}
+        \ifdefstring{\tempparam}{JetBlack}{
+            \ChuyenHeMauDen 
+            \def\mauTieuDe{JetBlack}
+        }{}
+        
+        % 3. In Tiêu đề
+        \noindent 
+        % In "Câu X. (Y điểm)" theo màu đã xử lý
+        \textbf{\textcolor{\mauTieuDe}{Câu \thesocauhoi.}}
+        \textcolor{UMTRed}{\textbf{(\LayDiem{#1} điểm)}} 
+
+        % 4. In nội dung lời giải
+        \useproblem[ds]{#1}
+        \vspace{0.5cm}
+    }%
+}
+%%%%%%%%%%%%%%%%%%%%
