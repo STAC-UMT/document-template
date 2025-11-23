@@ -1561,7 +1561,7 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
   \newenvironment{solution}{\par\noindent\textbf{\solutionname:}\space
     \ignorespaces}{}%
 }{}
-\newcommand*{\solutionname}{\textbf{ \textcolor{blue}{Lời giải.} }}
+\newcommand*{\solutionname}{\textbf{\textcolor{blue}{Lời giải.}}}
 \newenvironment{textenum}{%
   \ifnum\@enumdepth>\thr@@
     \@toodeep
@@ -1612,26 +1612,47 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
 \setlength{\widthfig}{0pt}
 \setlength{\widthtemp}{\linewidth}
 %%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\@snewproblemtl}[3][0]{%
+% --- Cấu hình biến hiển thị điểm ---
+\newif\ifhienthidiem
+\hienthidiemtrue % Mặc định luôn hiển thị điểm
+
+% --- Lệnh lấy điểm từ bộ nhớ ---
+\newcommand{\LayDiem}[1]{%
+  \@ifundefined{diemso@#1}{}{\csname diemso@#1\endcsname}%
+}
+
+\newcommand{\@snewproblemtl}[4][0]{%
+\expandafter\gdef\csname diemso@#2\endcsname{#3} % Lưu điểm vào bộ nhớ
 \begin{defproblem}[#1]{#2}%
-{#3}
+    % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
+    \ifhienthidiem
+        \ifblank{#3}{}{\textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
+    \fi
+{#4}
 \end{defproblem}}
-\newcommand{\@newproblemtl}[4][0]{%
+
+\newcommand{\@newproblemtl}[5][0]{%
+\expandafter\gdef\csname diemso@#2\endcsname{#3} % Lưu điểm vào bộ nhớ
 \begin{defproblem}[#1]{#2}%
  \ifshowproblems 
-{\ #3} 
+    % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
+    \ifhienthidiem
+        \ifblank{#3}{}{\textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
+    \fi
+    {#4} 
  \fi
 \begin{onlysolution}%
  \ifshowproblems 
  \par\medskip
 \fi
  \solutionname
-#4
+#5
 \end{onlysolution}%
  \par\medskip
 \end{defproblem}}
 %%%%%%%%%%%
-\renewcommand{\solutionname}{\textbf{ \textcolor{blue}{Lời giải.} }}
+% \renewcommand{\solutionname}{\textbf{\textcolor{blue}{Lời giải.}}}
+\renewcommand{\solutionname}{}
 \newif\ifduongke \duongketrue
 
 %%%%%%%%%%%%%
@@ -1885,7 +1906,7 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
 %%\@rightdot\@leftdot\textbf{ Lời giải.} \causo
 % \def\dapandung{B}
 \newcommand{\dung}[1]{\addtocounter{@choice}{1}\ifmotda \noindent\ifshowanswers \else\causo \fi% 
-\textbf{ \textcolor{blue}{Lời giải.} } Đáp án đúng \@leftdotd{\textcolor{red}{\@upletter{@choice}}}\@rightdotd.\hspace*{-0.5em}%
+\textbf{\textcolor{blue}{Lời giải.}} Đáp án đúng \@leftdotd{\textcolor{red}{\@upletter{@choice}}}\@rightdotd.\hspace*{-0.5em}%
 \ifnum\value{@choice}=1%
 \def\dapandung{\cboxv{A}}% 
 \def\dapansai{\cboxx{B},\cboxx{C},\cboxx{D}}% 
@@ -3639,7 +3660,7 @@ Cách tô đúng là: {\Huge\textbullet} và tô sai là \@khoanh{X}\@khoanh{V}\
 \def\loigiai##1{\ifcholoigiai
  \item[]\begin{minipage}[t]{\linewidth}
 \noindent\dotfill\par
-\noindent\textbf{\textcolor{blue}{Lời giải.} }  ##1
+\noindent\textbf{\textcolor{blue}{Lời giải.}}  ##1
 \hfill $\square$\par
 \noindent\hrulefill\par
 \end{minipage}
