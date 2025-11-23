@@ -1626,7 +1626,7 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
 \begin{defproblem}[#1]{#2}%
     % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
     \ifhienthidiem
-        \ifblank{#3}{}{\textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
+        \ifblank{#3}{}{ \textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
     \fi
 {#4}
 \end{defproblem}}
@@ -1637,7 +1637,7 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
  \ifshowproblems 
     % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
     \ifhienthidiem
-        \ifblank{#3}{}{\textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
+        \ifblank{#3}{}{ \textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
     \fi
     {#4} 
  \fi
