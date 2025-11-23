@@ -345,8 +345,7 @@
         \ifdefstring{\tempparam}{black}{\ChuyenHeMauDen}{}
         \ifblank{#2}
             {\noindent \textbf{\textcolor{black}{Câu \thesocauhoi.}}}
-            {\noindent \textbf{\textcolor{#2}{Câu \thesocauhoi.}}}
-        \useproblem[ds]{#1}
+            {\noindent \textbf{\textcolor{#2}{Câu \thesocauhoi.}}}\useproblem[ds]{#1}
     }%
 }
 
