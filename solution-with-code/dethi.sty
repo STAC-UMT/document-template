@@ -1621,32 +1621,39 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
   \@ifundefined{diemso@#1}{}{\csname diemso@#1\endcsname}%
 }
 
-\newcommand{\@snewproblemtl}[4][0]{%
+\newcommand{\@snewproblemtl}[5][0]{%
 \expandafter\gdef\csname diemso@#2\endcsname{#3} % Lưu điểm vào bộ nhớ
 \begin{defproblem}[#1]{#2}%
+    % --- Xử lý hiển thị Nguồn (Tham số #4) ---
+    \ifblank{#4}{}{%
+          \noindent\hfill{\footnotesize\itshape\textcolor{gray}{(Nguồn: #4)}}\noindent%
+    }%
     % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
     \ifhienthidiem
         \ifblank{#3}{}{ \textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
     \fi
-{#4}
+{#5}
 \end{defproblem}}
 
-\newcommand{\@newproblemtl}[5][0]{%
+\newcommand{\@newproblemtl}[6][0]{%
 \expandafter\gdef\csname diemso@#2\endcsname{#3} % Lưu điểm vào bộ nhớ
 \begin{defproblem}[#1]{#2}%
  \ifshowproblems 
+    % --- Xử lý hiển thị Nguồn (Tham số #4) ---
+    \ifblank{#4}{}{ \textcolor{UMTRed}{ \textbf{(#4)}}\noindent%
+    }%
     % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
     \ifhienthidiem
         \ifblank{#3}{}{ \textcolor{UMTRed}{\textbf{(#3 điểm)}}}%
     \fi
-    {#4} 
+    {#5} 
  \fi
 \begin{onlysolution}%
  \ifshowproblems 
  \par\medskip
 \fi
  \solutionname
-#5
+#6
 \end{onlysolution}%
  \par\medskip
 \end{defproblem}}
