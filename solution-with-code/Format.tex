@@ -12,6 +12,7 @@
 \usepackage{tkz-base}
 \usepackage{tkz-euclide}
 \usepackage{tkz-tab}
+\usetikzlibrary{shapes.gates.logic.US, calc}
 \usepackage{import}
 \usepackage{multicol}
 \usepackage{listings}
@@ -19,7 +20,7 @@
 \usepackage{booktabs}
 \usepackage{tabto}
 \usepackage{caption}[=v3.0]
-\usepackage[colorlinks,hyperindex,plainpages=false,unicode]{hyperref}
+\usepackage[colorlinks,linkcolor=red,filecolor=magenta,citecolor=green,urlcolor=STACBlue,hyperindex,plainpages=false,unicode]{hyperref}
 \newenvironment{tabs}[1]{\flushleft\TabPositions{#1}}{\endflushleft}
 %%%%%%%%%%%%%%%%%%%%
 
@@ -102,6 +103,7 @@
 % \definecolor{UMTRed}{RGB}{250, 25, 35}
 \definecolor{UMTBlue}{RGB}{0, 0, 255}
 \definecolor{UMTRed}{RGB}{255, 0, 0}
+\definecolor{STACBlue}{RGB}{28, 166, 222}
 \mdfdefinestyle{theoremstyle}{%
   % linecolor=black,linewidth=1pt,%
   linecolor=UMTBlue,linewidth=1pt,%
@@ -134,8 +136,14 @@
   \renewcommand{\headrulewidth}{0pt}
   \renewcommand{\footrulewidth}{0pt}
   \fancyfoot{}
-  \fancyfoot[L]{\textcolor{black}{\textbf{CÂU LẠC BỘ HỌC THUẬT KHOA CÔNG NGHỆ UMT}} \\ \textcolor{black}{\text{UMT School of Technology Academic Club}}}
-  \fancyfoot[R]{\textcolor{black}{\textbf{Trang {\thepage}}}}
+  \fancyfoot[L]{\textcolor{black}{\textbf{\href{https://www.facebook.com/STAC.UMT/}{CÂU LẠC BỘ HỌC THUẬT KHOA CÔNG NGHỆ UMT}}} \\ \textcolor{black}{\text{UMT School of Technology Academic Club}}}
+  \fancyfoot[R]{
+    \textcolor{black}{\textbf{Trang {\thepage}}}
+  }
+  \fancyhead{}
+  \fancyhead[R]{
+    \InsertQR
+  }
 }
 %%%%%%%%%%%%%%%%%%%%
 
@@ -217,6 +225,63 @@
 %%%%%%%%%%%%%%%%%%%% Custom caption style
 \captionsetup[table]{labelfont=bf, labelsep=period, justification=centering}
 \captionsetup[figure]{labelfont=bf, labelsep=period, justification=centering}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Karnaugh (Like Rosen's book) https://tex.stackexchange.com/questions/527500/k-map-diagrams-from-rosen
+\makeatletter
+\pgfmathdeclarefunction{Dim}{1}{%
+\begingroup%
+\pgfutil@tempcnta0%
+\@for\pgfutil@tempa:=#1\do{\advance\pgfutil@tempcnta1}%
+\edef\pgfmathresult{\the\pgfutil@tempcnta}%
+\pgfmathsmuggle\pgfmathresult\endgroup%
+}
+\makeatletter
+\usetikzlibrary{calc,matrix,fit}
+\tikzset{k-map diagram/.style={matrix of math nodes,nodes in empty cells,
+    nodes={draw,minimum size=3.6em,anchor=center},
+    column 1/.style={nodes={draw=none,minimum size=0em,text=UMTBlue,font=\normalsize}},
+    row 1/.style={nodes={draw=none,minimum size=0em,text=UMTBlue,font=\normalsize}},
+    column sep=-2*\pgflinewidth,row sep=-1*\pgflinewidth,
+    append after command={let 
+        \p1=($(\tikzlastnode-2-2.west)-(\tikzlastnode.west)$) in
+     (\tikzlastnode.east)++ (\x1,0)}
+    },pics/ofit/.style={code={
+     \pgfmathtruncatemacro{\mydim}{Dim("#1")-1}
+     \ifcase\mydim
+      \draw[UMTBlue] #1 circle[radius=3ex];
+     \or
+      \def\mysplit##1,##2;{\edef\myA{##1}\edef\myB{##2}}
+      \mysplit#1;
+      \draw[UMTBlue] let \p1=\myA,\p2=\myB,\n1={atan2(\y2-\y1,\x2-\x1)}
+       in 
+       ($ (\p1)!3ex!90:(\p2) $) 
+       arc[start angle=\n1+90,end angle=\n1+270,radius=3ex] --
+        ($ (\p2)!3ex!90:(\p1) $) 
+       arc[start angle=\n1-90,end angle=\n1+90,radius=3ex] -- cycle;
+     \fi
+    }},
+    pics/cfit/.style={code={
+     \pgfmathtruncatemacro{\mydim}{Dim("#1")-1}
+     \ifcase\mydim
+      \draw[UMTBlue] ($#1+(0,3ex)$)
+        arc[start angle=90,end angle=-90,radius=3ex]
+        -- ++ (-\pgfkeysvalueof{/tikz/cfit/arm},0) -- ++ (0,6ex) -- cycle;
+      \or
+       \def\mysplit##1,##2;{\edef\myA{##1}\edef\myB{##2}}
+      \mysplit#1;
+      \draw[UMTBlue] let \p1=\myA,\p2=\myB,\n1={-1*atan2(\y2-\y1,\x2-\x1)}
+       in 
+        ($(\p1)+(\n1:3ex)$)
+        arc[start angle=\n1,end angle=\n1-90,radius=3ex]
+        --
+        ($(\p2)+(\n1-90:3ex)$)
+        arc[start angle=\n1-90,end angle=\n1-180,radius=3ex]
+        -- ++ (\n1+90:\pgfkeysvalueof{/tikz/cfit/arm}) 
+        -- ($(\p1)+(\n1:3ex)+(\n1+90:\pgfkeysvalueof{/tikz/cfit/arm})$)
+        -- cycle;
+      \fi 
+    }},cfit/.cd,arm/.initial=1.8em}
 %%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% Custom matrix
@@ -317,6 +382,7 @@
 \newcommand{\ChuyenHeMauDen}{%
     \colorlet{UMTBlue}{JetBlack} 
     \colorlet{UMTRed}{JetBlack}
+    \colorlet{STACBlue}{JetBlack}
     \colorlet{blue}{JetBlack}
     \colorlet{red}{JetBlack}
     \colorlet{cyan}{JetBlack}
@@ -329,6 +395,7 @@
 %%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% Custom dethi.sty
+\usepackage{etoolbox}
 % Lệnh in Đề bài với tham số màu tùy chọn
 % Cú pháp: \LayDeBai{Mã_Câu_Hỏi}[Màu_Sắc]
 % Ví dụ:   \LayDeBai{bai:1}          -> Màu đen mặc định
@@ -404,13 +471,77 @@
         
         % 3. In Tiêu đề
         \noindent 
-        % In "Câu X. (Y điểm)" theo màu đã xử lý
-        \textbf{\textcolor{\mauTieuDe}{Câu \thesocauhoi.}}
-        \textcolor{UMTRed}{\textbf{(\LayDiem{#1} điểm)}} 
+        \textbf{\textcolor{\mauTieuDe}{Câu \thesocauhoi.}}%
+        \ifcsdef{diemso@#1}{%
+            % Lấy giá trị thực của điểm đưa vào biến tạm \diemTam
+            \letcs{\diemTam}{diemso@#1}%
+            % Kiểm tra: Nếu \diemTam KHÔNG rỗng thì mới in
+            \ifdefempty{\diemTam}{}{%
+                 \ \textcolor{UMTRed}{\textbf{(\diemTam\ điểm)}}%
+            }%
+        }{}%
 
         % 4. In nội dung lời giải
         \useproblem[ds]{#1}
         \vspace{0.5cm}
     }%
+}
+
+% LỆNH IN: HỘP ĐỀ BÀI TRONG TCOLORBOX (CÂU X + NỘI DUNG)
+% Cấu trúc: Khung tcolorbox (nền cyan nhạt, viền đen nhạt) bao quanh Câu hỏi.
+%
+% Cú pháp: \LayDeBaiBox{Mã_Câu_Hỏi}[Màu_Của_Chữ_Câu]
+% Ví dụ:   \LayDeBaiBox{bai:trr-1}[UMTBlue] -> Chữ "Câu X" màu UMTBlue, Nội dung giữ màu gốc.
+%          \LayDeBaiBox{bai:trr-1}          -> Tất cả chuyển sang hệ màu đen (Chế độ in ấn).
+%          \LayDeBaiBox{bai:trr-1}[black]   -> Tất cả chuyển sang hệ màu đen (Giống mặc định).
+\NewDocumentCommand{\LayDeBaiBox}{m O{black}}{%
+    \begin{tcolorbox}[
+        colback=cyan!10!white,
+        opacityback=0,
+        enhanced jigsaw,
+        colframe=black!75!white, 
+        sharp corners
+    ]
+        \showproblems \hideanswers \khongloigiai
+        \stepcounter{socauhoi} % Tự động tăng số thứ tự
+        
+        % Logic điều chỉnh màu thông minh
+        \def\tempparam{#2}
+        \ifblank{#2}{\ChuyenHeMauDen}{}%
+        \ifdefstring{\tempparam}{black}{\ChuyenHeMauDen}{}%
+        
+        % In tiêu đề "Câu X."
+        \ifblank{#2}
+            {\noindent \textbf{\textcolor{black}{Câu \thesocauhoi.}}}
+            {\noindent \textbf{\textcolor{#2}{Câu \thesocauhoi.}}}%
+        \useproblem[ds]{#1}%
+    \end{tcolorbox}
+}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Multicols-like
+\usepackage{tasks}
+\settasks{
+    label-offset = 0.75em, % Khoảng cách giữa nhãn (1) và chữ
+    label-width = 1em % Độ rộng dành cho nhãn
+}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Some custom symbols
+\newcommand{\rank}{\mathrm{rank}}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% % Add QR on each page
+\newcommand{\InsertQR}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=south east, 
+              xshift=-0.3cm,       % Canh lề (ngang) 
+              yshift=-2.1cm]        % Canh lề (dọc) 
+              at (current page.north east) 
+        {
+            % Đảm bảo đường dẫn ảnh đúng
+            \includegraphics[height=1.5cm]{Resources/Images/STAC_QR.png} 
+        };
+    \end{tikzpicture}%
 }
 %%%%%%%%%%%%%%%%%%%%
