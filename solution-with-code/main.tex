@@ -4,10 +4,28 @@
 \begin{document}
 % \input{MainPages/TitlePage} % Trang bìa 
 % \input{MainPages/SkipPage}
-% \input{MainPages/StatementPage} % Trang đề thi
+\input{MainPages/StatementPage} % Trang đề thi
 % \ifthispageodd{}{\input{MainPages/SkipPage}}
 \input{MainPages/SolutionPage} % Trang lời giải
 
 \newpage
+
+% Nạp dữ liệu câu hỏi và lời giải từ Statements.tex vào bộ nhớ 'ds'
+\makeatletter
+\@ifundefined{prob@db@ds}{\prob@newdb{ds}}{}
+\makeatother
+\loadallproblems[ds]{Statements}
+
+% Reset bộ đếm về 0 nếu bắt đầu một phần mới (tùy chọn)
+\setcounter{socauhoi}{0}
+
+\hienthidiemtrue
+\LayDeBai{bai:1}[UMTBlue]    
+\LayLoiGiai{bai:1}[]
+
+\setcounter{socauhoi}{0}
+
+\LayCauVaDiem{bai:1}[UMTBlue]
+\LayCauVaDiem{bai:2}[blue]
 
 \end{document}
