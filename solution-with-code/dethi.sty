@@ -1625,8 +1625,7 @@ Please specify (e.g. \csname @prob@getargs@eg@\romannumeral#1\endcsname):}%
 \expandafter\gdef\csname diemso@#2\endcsname{#3} % Lưu điểm vào bộ nhớ
 \begin{defproblem}[#1]{#2}%
     % --- Xử lý hiển thị Nguồn (Tham số #4) ---
-    \ifblank{#4}{}{%
-          \noindent\hfill{\footnotesize\itshape\textcolor{gray}{(Nguồn: #4)}}\noindent%
+    \ifblank{#4}{}{ \textcolor{UMTRed}{ \textbf{(#4)}}\noindent%
     }%
     % Kiểm tra: Nếu ĐANG BẬT hiển thị điểm & tham số điểm KHÔNG RỖNG
     \ifhienthidiem
