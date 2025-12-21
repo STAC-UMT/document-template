@@ -18,6 +18,15 @@
 \usepackage{listings}
 \usepackage{lscape}
 \usepackage{booktabs}
+%%%%%%%%%%%%%%%%%%%% Bibliography Setup
+% Load gói biblatex với các tùy chọn:
+% backend=biber: Trình xử lý biên dịch (mạnh hơn BibTeX cũ)
+% natbib=true: Cho phép dùng các lệnh của natbib như \cite, \citep
+% style=alphabetic: Kiểu trích dẫn chữ cái (ví dụ: [New24])
+% maxbibnames=50: Hiển thị tối đa 50 tên tác giả trước khi dùng et al.
+\usepackage[backend=biber,natbib=true,style=alphabetic,maxbibnames=50]{biblatex}
+\addbibresource{D:/GitHub/STAC-UMT/references.bib} 
+%%%%%%%%%%%%%%%%%%%%
 \usepackage{tabto}
 \usepackage{caption}[=v3.0]
 \usepackage[colorlinks,linkcolor=red,filecolor=magenta,citecolor=green,urlcolor=STACBlue,hyperindex,plainpages=false,unicode]{hyperref}
